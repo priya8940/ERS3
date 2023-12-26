@@ -1,0 +1,85 @@
+body{
+    margin: 0px;
+}
+.main-header{
+    background-color: cadetblue;
+    text-align: center;
+    padding: 2px;
+    height: 50px;
+    display: flex;
+}
+.title-heading h2{
+    margin: 0px;
+    margin-top: 10px;
+    margin-left: 590px;
+}
+.main-header h2{
+    margin: 0;
+    margin-top: 10px;
+    margin-left: 300px;
+}
+.title-heading{
+    width: 70%;
+
+}
+.header-buttons{
+    width: 30%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    
+}
+.header-buttons button{
+ height: 30px ;
+ margin-right: 10px ;
+}
+.register{
+    text-align: center;
+    margin-top: 120px;
+}
+.login{
+    text-align: center;
+    margin-top: 120px;
+}
+.emp{
+    display: flex;
+   padding: 2px;
+}
+.credentials{
+    
+     width: 30%;
+
+}
+.btn-field{
+    width: 15%;
+}
+.review{
+    display: flex;
+    width: 45%;
+    margin: auto;
+   justify-content: space-around;
+}
+.right-div{
+    margin-top: 10px;
+}
+.textara{
+    height: 110%;
+    width: 95%;
+}
+#reviews-container{
+    width: 50%;
+    text-align: center;
+    margin-top:3%;
+    margin-left: 26%;
+   
+}
+.auther{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 60%;
+}
+.reviews{
+    background-color: aquamarine;
+    border: 2px solid black;
+    margin-top: 2px;
+}
+
