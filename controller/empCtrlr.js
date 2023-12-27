@@ -6,9 +6,9 @@ const userModel=require('../models/review');
  module.exports.register= async (req,res)=>{
     //console.log(req.body);
     const {email,name,password}=req.body;
-    // console.log(email);
-    // console.log(password);
-    // console.log(name);
+    const admin=req?.body?.is_admin;
+
+    
 
     //check if user already exist or not 
     const userFound=await empModel.findOne({'email':email});
@@ -19,7 +19,8 @@ const userModel=require('../models/review');
          savedUser=await empModel.create({
            'email': email,
            'name':name,
-           'password':password 
+           'password':password,
+           'is_admin':admin?true:false 
         })
     }else{
         //user already exist return response
@@ -185,17 +186,34 @@ module.exports.addreviewParticipant=async (req,res)=>{
     // console.log(reviewerEmail);
     let revieverEmployee=await empModel.findOne({'email':reviewerEmail});
     revieverEmployee.reviewer_for.push(revieweeId);
-    await revieverEmployee.save();
 
-    res.json({
+     
+
+    let flag=false;
+    let revieverForArr=revieverEmployee.reviewer_for;
+    console.log(`reviewer for rray is printing ${revieverEmployee}`);
+    console.log(`id want to be add ${revieweeId}`);
+    for(let i=0; i<revieverForArr.length; i++){
+        if(revieverForArr[i]==revieweeId){
+              flag=true;
+              console.log(`flag is true now`);
+              break;
+        }
+    }
+    if(flag==false){
+     revieverEmployee.reviewer_for.push(revieweeId);
+     await revieverEmployee.save();
+     res.json({
         'status_code':201,
         'message':'Reviewer added Succesfully'
+      })
+     return res;
+    }
+     res.json({
+        'status_code':205,
+        'message':'Reviewer Already Exists'
     })
     return res;
-
-
-
-
 }
 
 module.exports.whoAmI=async(req,res)=>{  
