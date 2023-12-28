@@ -185,7 +185,7 @@ module.exports.addreviewParticipant=async (req,res)=>{
     // console.log(revieweeId);
     // console.log(reviewerEmail);
     let revieverEmployee=await empModel.findOne({'email':reviewerEmail});
-    revieverEmployee.reviewer_for.push(revieweeId);
+   // revieverEmployee.reviewer_for.push(revieweeId);
 
      
 

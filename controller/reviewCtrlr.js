@@ -3,7 +3,7 @@ const empModel=require('../models/employeeview');
 
 module.exports.addReview=async (req,res)=>{
 const {message,review_for}=req.body;
-//console.log(message);
+    //console.log(message);
 if(message==undefined || message==null){
     res.json({
         'status_code':500,
@@ -12,6 +12,7 @@ if(message==undefined || message==null){
     return res;
 
 }
+//if cookie is true then split it
 const review_by=req.headers.cookie?.split('=')[1];
 if(review_by==null || review_by==undefined || review_by==-1){
     res.json({
