@@ -476,318 +476,319 @@ function updateEmployee(event){
   
   }
 
-  //show review function
-  function  showReviews(event){
-    let emp_id = event.target.parentElement.id;
- // let id = divEle.id;
-   // console.log(event.target.parentElement.id);
-    fetch(`http://localhost:8000/v1/employees/${emp_id }`,{
-      "method":'GET',
-      'credentials':'include',
-      'headers':{
-         'content-type':'application/json'
-      }
-    }).then((data)=>{
-      return data.json();
-    }).then((data)=>{
-          //call whoamI
-          fetch(`http://localhost:8000/v1/employees/whoAmI`,{
-            'method':'GET',
-            "credentials":'include',
-            "headers":{
-              'content-type':'application/json'
-            },
-          }).then((whoamIdata)=>{
-            return whoamIdata.json();
-          }).then((whoamiRes)=>{
-            //call whoami
-            //if your own reviews, show diffrent UI
-            //else shoew diffrent UI
-            if(whoamiRes.user._id.toString()==emp_id){
-              console.log('viewing own view');
-              let reviewArr=data.allEmp.reviews;
-              let id=data.allEmp._id.toString();
-              let name=data.allEmp.name;
-              let email=data.allEmp.email;
+//   //show review function
+//   function  showReviews(event){
+//     let emp_id = event.target.parentElement.id;
+//  // let id = divEle.id;
+//    // console.log(event.target.parentElement.id);
+//     fetch(`http://localhost:8000/v1/employees/${emp_id }`,{
+//       "method":'GET',
+//       'credentials':'include',
+//       'headers':{
+//          'content-type':'application/json'
+//       }
+//     }).then((data)=>{
+//       return data.json();
+//     }).then((data)=>{
+//           //call whoamI
+//           fetch(`http://localhost:8000/v1/employees/whoAmI`,{
+//             'method':'GET',
+//             "credentials":'include',
+//             "headers":{
+//               'content-type':'application/json'
+//             },
+//           }).then((whoamIdata)=>{
+//             return whoamIdata.json();
+//           }).then((whoamiRes)=>{
+//             //call whoami
+//             //if your own reviews, show diffrent UI
+//             //else shoew diffrent UI
+//             if(whoamiRes.user._id.toString()==emp_id){
+//               console.log('viewing own view');
+//               let reviewArr=data.allEmp.reviews;
+//               let id=data.allEmp._id.toString();
+//               let name=data.allEmp.name;
+//               let email=data.allEmp.email;
 
-              let nameEle=document.createElement('h3');
-              nameEle.innerText=`Name:${name}`;
-              let emailEle=document.createElement('h3');
-              emailEle.innerText=`Email:${email}`;
+//               let nameEle=document.createElement('h3');
+//               nameEle.innerText=`Name:${name}`;
+//               let emailEle=document.createElement('h3');
+//               emailEle.innerText=`Email:${email}`;
 
-              let sectionEle1=document.createElement('section');
-              sectionEle1.appendChild(nameEle);
-              sectionEle1.appendChild(emailEle);
+//               let sectionEle1=document.createElement('section');
+//               sectionEle1.appendChild(nameEle);
+//               sectionEle1.appendChild(emailEle);
 
-                let rootEle=document.getElementById('root');
-                rootEle.innerHTML='';
-                 let revewsArr=data.allEmp.review; 
+//                 let rootEle=document.getElementById('root');
+//                 rootEle.innerHTML='';
+//                  let revewsArr=data.allEmp.review; 
   
-                for(let review of revewsArr){
-                  let reviewEle=document.createElement('p')
-                  reviewEle.innerText=review.message;
+//                 for(let review of revewsArr){
+//                   let reviewEle=document.createElement('p')
+//                   reviewEle.innerText=review.message;
 
-                  let autherEle=document.createElement('p')
-                  autherEle.classList.add('auther');
-                  fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
-                      "credentials":'include'
-                  }).then((data)=>{
-                    return data.json();
-                  }).then((data)=>{
-                  autherEle.innerText=`Review BY:${data.allEmp.name}`;
-                  }) 
-                  autherEle.classList.add('auther');
+//                   let autherEle=document.createElement('p')
+//                   autherEle.classList.add('auther');
+//                   fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
+//                       "credentials":'include'
+//                   }).then((data)=>{
+//                     return data.json();
+//                   }).then((data)=>{
+//                   autherEle.innerText=`Review BY:${data.allEmp.name}`;
+//                   }) 
+//                   autherEle.classList.add('auther');
 
-                  let divEle=document.createElement('div');
-                  divEle.classList.add('reviews')
-                  divEle.setAttribute('id',review._id.toString());
+//                   let divEle=document.createElement('div');
+//                   divEle.classList.add('reviews')
+//                   divEle.setAttribute('id',review._id.toString());
             
-                  divEle.appendChild(reviewEle);
-                  divEle.appendChild(autherEle);
+//                   divEle.appendChild(reviewEle);
+//                   divEle.appendChild(autherEle);
 
             
-              // let feedbackMessage = review?.feedback ? review.feedback: null;
-              // if(feedbackMessage == null){
-                let feedbackbtnEle = document.createElement('button');
-                feedbackbtnEle.addEventListener('click',()=>addFeedback( review._id.toString()));
-                feedbackbtnEle.innerText = 'Add-Feddback';
-                divEle.appendChild(feedbackbtnEle);
+//               // let feedbackMessage = review?.feedback ? review.feedback: null;
+//               // if(feedbackMessage == null){
+//                 let feedbackbtnEle = document.createElement('button');
+//                 feedbackbtnEle.addEventListener('click',()=>addFeedback( review._id.toString()));
+//                 feedbackbtnEle.innerText = 'Add-Feddback';
+//                 divEle.appendChild(feedbackbtnEle);
 
-              // }else{  
-              //   let h4Ele = document.createElement('h4');
-              //   h4Ele.innerText = "Employee's Feedback";
-              //   divEle.appendChild(h4Ele);
-              //   let pEle = document.createElement('p');
-              //   pEle.innerText = feedbackMessage;
-              //   divEle.appendChild(pEle);
-              //}
+//               // }else{  
+//               //   let h4Ele = document.createElement('h4');
+//               //   h4Ele.innerText = "Employee's Feedback";
+//               //   divEle.appendChild(h4Ele);
+//               //   let pEle = document.createElement('p');
+//               //   pEle.innerText = feedbackMessage;
+//               //   divEle.appendChild(pEle);
+//               //}
               
-              let reviewContainer=document.getElementById('reviews-container');
-              reviewContainer.appendChild(divEle);
+//               let reviewContainer=document.getElementById('reviews-container');
+//               reviewContainer.appendChild(divEle);
        
 
-          }
-            }else{
-              console.log("viewing employees review");
-          //let reviewArr=data.allEmp.reviews;
-          let id=data.allEmp._id.toString();
-          let name=data.allEmp.name;
-          let email=data.allEmp.email;
+//           }
+//             }else{
+//               console.log("viewing employees review");
+//           //let reviewArr=data.allEmp.reviews;
+//           let id=data.allEmp._id.toString();
+//           let name=data.allEmp.name;
+//           let email=data.allEmp.email;
 
-          let nameEle=document.createElement('h3');
-          nameEle.innerText=`Name:${name}`;
+//           let nameEle=document.createElement('h3');
+//           nameEle.innerText=`Name:${name}`;
 
-          let emailEle=document.createElement('h3');
-          emailEle.innerText=`Email:${email}`;
+//           let emailEle=document.createElement('h3');
+//           emailEle.innerText=`Email:${email}`;
 
-          let sectionEle1=document.createElement('section');
-          sectionEle1.appendChild(nameEle);
-          sectionEle1.appendChild(emailEle);
+//           let sectionEle1=document.createElement('section');
+//           sectionEle1.appendChild(nameEle);
+//           sectionEle1.appendChild(emailEle);
 
-          let textarea=document.createElement('textarea');
-          //  textarea.setAttribute('value','sjdfvnufbvd');
-          textarea.setAttribute('cols','60');
-          textarea.setAttribute('rows','4');
-          textarea.setAttribute('id','input-textarea')
+//           let textarea=document.createElement('textarea');
+//           //  textarea.setAttribute('value','sjdfvnufbvd');
+//           textarea.setAttribute('cols','60');
+//           textarea.setAttribute('rows','4');
+//           textarea.setAttribute('id','input-textarea')
 
-          let buttonEle=document.createElement('button')
-          buttonEle.innerText='Add-Review'
-          buttonEle.addEventListener('click',(event)=>addReview(event,id));
+//           let buttonEle=document.createElement('button')
+//           buttonEle.innerText='Add-Review'
+//           buttonEle.addEventListener('click',(event)=>addReview(event,id));
 
 
-            //input field for adding revievwer
-            let reverInputEle=document.createElement('input');
-            reverInputEle.setAttribute('placeholder','Enter Reviewers Email');
-            reverInputEle.setAttribute('type','email');
-            reverInputEle.id='reviewer-input';
+//             //input field for adding revievwer
+//             let reverInputEle=document.createElement('input');
+//             reverInputEle.setAttribute('placeholder','Enter Reviewers Email');
+//             reverInputEle.setAttribute('type','email');
+//             reverInputEle.id='reviewer-input';
 
-          //add reviewer button
-          let reviewerbuttonEle=document.createElement('button')
-          reviewerbuttonEle.innerText='Add-Reviewer'
-          reviewerbuttonEle.addEventListener('click',(event)=>  addReviewer(id));
+//           //add reviewer button
+//           let reviewerbuttonEle=document.createElement('button')
+//           reviewerbuttonEle.innerText='Add-Reviewer'
+//           reviewerbuttonEle.addEventListener('click',(event)=>  addReviewer(id));
 
-          let sectionEle2=document.createElement('section');
-          sectionEle2.classList.add('right-div')
-          sectionEle2.appendChild(textarea);
-          sectionEle2.appendChild(buttonEle);
-          sectionEle2.appendChild(reverInputEle);
-          sectionEle2.appendChild(reviewerbuttonEle);
+//           let sectionEle2=document.createElement('section');
+//           sectionEle2.classList.add('right-div')
+//           sectionEle2.appendChild(textarea);
+//           sectionEle2.appendChild(buttonEle);
+//           sectionEle2.appendChild(reverInputEle);
+//           sectionEle2.appendChild(reviewerbuttonEle);
         
 
-          let inputContainerDiv=document.createElement('div');
-          inputContainerDiv.classList.add('review');
+//           let inputContainerDiv=document.createElement('div');
+//           inputContainerDiv.classList.add('review');
 
-          inputContainerDiv.appendChild(sectionEle1);
-          inputContainerDiv.appendChild(sectionEle2);
+//           inputContainerDiv.appendChild(sectionEle1);
+//           inputContainerDiv.appendChild(sectionEle2);
 
-          let rootEle=document.getElementById('root');
-          rootEle.innerHTML='';
-          rootEle.appendChild(inputContainerDiv);
-            console.log(data);
+//           let rootEle=document.getElementById('root');
+//           rootEle.innerHTML='';
+//           rootEle.appendChild(inputContainerDiv);
+//             console.log(data);
           
-            //show all reviews of employee ASK this to him
-            //so ful review array will come here
-              let revewsArr=data.allEmp.review; 
-              for(let review of revewsArr){
-                let reviewEle=document.createElement('p')
-                reviewEle.innerText=review.message;
-                let autherEle=document.createElement('p')
-                autherEle.classList.add('auther');
-                fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
-                    "credentials":'include'
-                }).then((data)=>{
-                  return data.json();
-                }).then((data)=>{
-                autherEle.innerText=`Review BY:${data.allEmp.name}`;
-                }) 
+//             //show all reviews of employee ASK this to him
+//             //so ful review array will come here
+//               let revewsArr=data.allEmp.review; 
+//               for(let review of revewsArr){
+//                 let reviewEle=document.createElement('p')
+//                 reviewEle.innerText=review.message;
+//                 let autherEle=document.createElement('p')
+//                 autherEle.classList.add('auther');
+//                 fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
+//                     "credentials":'include'
+//                 }).then((data)=>{
+//                   return data.json();
+//                 }).then((data)=>{
+//                 autherEle.innerText=`Review BY:${data.allEmp.name}`;
+//                 }) 
               
-                autherEle.classList.add('auther');
+//                 autherEle.classList.add('auther');
           
-                let divEle=document.createElement('div');
-                divEle.classList.add('reviews')
-                divEle.setAttribute('id',review._id.toString());
+//                 let divEle=document.createElement('div');
+//                 divEle.classList.add('reviews')
+//                 divEle.setAttribute('id',review._id.toString());
           
-                divEle.appendChild(reviewEle);
-                divEle.appendChild(autherEle);
+//                 divEle.appendChild(reviewEle);
+//                 divEle.appendChild(autherEle);
                  
-                let feedbackMessage = review?.feedback ? review.feedback: null;
+//                 let feedbackMessage = review?.feedback ? review.feedback: null;
 
-                if(feedbackMessage != null){
-                    let h4Ele = document.createElement('h4');
-                    h4Ele.innerText = "Employee's Feedback";
-                    divEle.appendChild(h4Ele);
-                    let pEle = document.createElement('p');
-                    pEle.innerText = feedbackMessage;
-                    divEle.appendChild(pEle);
-                }
-                ////Delete Button
-                let btnEle = document.createElement('button');
-                btnEle.addEventListener('click',(event)=>deleteReview(event, review._id.toString()));
-                btnEle.innerText = 'Delete';
-                divEle.appendChild(btnEle);
+//                 if(feedbackMessage != null){
+//                     let h4Ele = document.createElement('h4');
+//                     h4Ele.innerText = "Employee's Feedback";
+//                     divEle.appendChild(h4Ele);
+//                     let pEle = document.createElement('p');
+//                     pEle.innerText = feedbackMessage;
+//                     divEle.appendChild(pEle);
+//                 }
+//                 ////Delete Button
+//                 let btnEle = document.createElement('button');
+//                 btnEle.addEventListener('click',(event)=>deleteReview(event, review._id.toString()));
+//                 btnEle.innerText = 'Delete';
+//                 divEle.appendChild(btnEle);
 
-                let updateButtonEle=document.createElement('button');
-                updateButtonEle.addEventListener('click',()=>updateReview(review._id.toString()))
-                updateButtonEle.innerText='Update';
+//                 let updateButtonEle=document.createElement('button');
+//                 updateButtonEle.addEventListener('click',()=>updateReview(review._id.toString()))
+//                 updateButtonEle.innerText='Update';
         
                 
-                divEle.appendChild(updateButtonEle);
+//                 divEle.appendChild(updateButtonEle);
 
-                let reviewContainer=document.getElementById('reviews-container');
-                reviewContainer.appendChild(divEle);
-              }
-            }
-          })
-          //if your own reviews, show diffrent UI
-          //else show diffrent UI
-
-
-
-      // let reviewArr=data.allEmp.reviews;
-      //  let id=data.allEmp._id.toString();
-      //  let name=data.allEmp.name;
-      //  let email=data.allEmp.email;
-
-      //  let nameEle=document.createElement('h3');
-      //  nameEle.innerText=`Name:${name}`;
-
-      //  let emailEle=document.createElement('h3');
-      //  emailEle.innerText=`Email:${email}`;
-
-      //  let sectionEle1=document.createElement('section');
-      //  sectionEle1.appendChild(nameEle);
-      //  sectionEle1.appendChild(emailEle);
-
-      //  let textarea=document.createElement('textarea');
-      // //  textarea.setAttribute('value','sjdfvnufbvd');
-      //  textarea.setAttribute('cols','60');
-      //  textarea.setAttribute('rows','4');
-      //  textarea.setAttribute('id','input-textarea')
-
-      //  let buttonEle=document.createElement('button')
-      //  buttonEle.innerText='Add-review'
-      //  buttonEle.addEventListener('click',(event)=>addReview(event,id));
+//                 let reviewContainer=document.getElementById('reviews-container');
+//                 reviewContainer.appendChild(divEle);
+//               }
+//             }
+//           })
+//           //if your own reviews, show diffrent UI
+//           //else show diffrent UI
 
 
-      //   //input field for adding revievwer
-      //   let reverInputEle=document.createElement('input');
-      //   reverInputEle.setAttribute('placeholder','Enter Reviewers Email');
-      //   reverInputEle.setAttribute('type','email');
-      //   reverInputEle.id='reviewer-input';
 
-      //  //add reviewer button
-      //  let reviewerbuttonEle=document.createElement('button')
-      //  reviewerbuttonEle.innerText='Add-Reviewer'
-      //  reviewerbuttonEle.addEventListener('click',(event)=>  addReviewer(id));
+//       // let reviewArr=data.allEmp.reviews;
+//       //  let id=data.allEmp._id.toString();
+//       //  let name=data.allEmp.name;
+//       //  let email=data.allEmp.email;
 
-      //  let sectionEle2=document.createElement('section');
-      //  sectionEle2.classList.add('right-div')
-      //  sectionEle2.appendChild(textarea);
-      //  sectionEle2.appendChild(buttonEle);
-      //  sectionEle2.appendChild(reverInputEle);
-      //  sectionEle2.appendChild(reviewerbuttonEle);
+//       //  let nameEle=document.createElement('h3');
+//       //  nameEle.innerText=`Name:${name}`;
+
+//       //  let emailEle=document.createElement('h3');
+//       //  emailEle.innerText=`Email:${email}`;
+
+//       //  let sectionEle1=document.createElement('section');
+//       //  sectionEle1.appendChild(nameEle);
+//       //  sectionEle1.appendChild(emailEle);
+
+//       //  let textarea=document.createElement('textarea');
+//       // //  textarea.setAttribute('value','sjdfvnufbvd');
+//       //  textarea.setAttribute('cols','60');
+//       //  textarea.setAttribute('rows','4');
+//       //  textarea.setAttribute('id','input-textarea')
+
+//       //  let buttonEle=document.createElement('button')
+//       //  buttonEle.innerText='Add-review'
+//       //  buttonEle.addEventListener('click',(event)=>addReview(event,id));
+
+
+//       //   //input field for adding revievwer
+//       //   let reverInputEle=document.createElement('input');
+//       //   reverInputEle.setAttribute('placeholder','Enter Reviewers Email');
+//       //   reverInputEle.setAttribute('type','email');
+//       //   reverInputEle.id='reviewer-input';
+
+//       //  //add reviewer button
+//       //  let reviewerbuttonEle=document.createElement('button')
+//       //  reviewerbuttonEle.innerText='Add-Reviewer'
+//       //  reviewerbuttonEle.addEventListener('click',(event)=>  addReviewer(id));
+
+//       //  let sectionEle2=document.createElement('section');
+//       //  sectionEle2.classList.add('right-div')
+//       //  sectionEle2.appendChild(textarea);
+//       //  sectionEle2.appendChild(buttonEle);
+//       //  sectionEle2.appendChild(reverInputEle);
+//       //  sectionEle2.appendChild(reviewerbuttonEle);
      
 
-      //  let inputContainerDiv=document.createElement('div');
-      //  inputContainerDiv.classList.add('review');
+//       //  let inputContainerDiv=document.createElement('div');
+//       //  inputContainerDiv.classList.add('review');
 
-      //  inputContainerDiv.appendChild(sectionEle1);
-      //  inputContainerDiv.appendChild(sectionEle2);
+//       //  inputContainerDiv.appendChild(sectionEle1);
+//       //  inputContainerDiv.appendChild(sectionEle2);
 
-      //  let rootEle=document.getElementById('root');
-      //  rootEle.innerHTML='';
-      //  rootEle.appendChild(inputContainerDiv);
-      //   console.log(data);
+//       //  let rootEle=document.getElementById('root');
+//       //  rootEle.innerHTML='';
+//       //  rootEle.appendChild(inputContainerDiv);
+//       //   console.log(data);
        
-      //    //show all reviews of employee ASK this to him
-      //    //so ful review array will come here
-      //     let revewsArr=data.allEmp.review; 
-      //     for(let review of revewsArr){
-      //       let reviewEle=document.createElement('p')
-      //       reviewEle.innerText=review.message;
-      //       let autherEle=document.createElement('p')
-      //       autherEle.classList.add('auther');
-      //       fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
-      //           "credentials":'include'
-      //       }).then((data)=>{
-      //         return data.json();
-      //       }).then((data)=>{
-      //        autherEle.innerText=`Review BY:${data.allEmp.name}`;
-      //       }) 
+//       //    //show all reviews of employee ASK this to him
+//       //    //so ful review array will come here
+//       //     let revewsArr=data.allEmp.review; 
+//       //     for(let review of revewsArr){
+//       //       let reviewEle=document.createElement('p')
+//       //       reviewEle.innerText=review.message;
+//       //       let autherEle=document.createElement('p')
+//       //       autherEle.classList.add('auther');
+//       //       fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
+//       //           "credentials":'include'
+//       //       }).then((data)=>{
+//       //         return data.json();
+//       //       }).then((data)=>{
+//       //        autherEle.innerText=`Review BY:${data.allEmp.name}`;
+//       //       }) 
           
-      //       autherEle.classList.add('auther');
+//       //       autherEle.classList.add('auther');
        
-      //       let divEle=document.createElement('div');
-      //       divEle.classList.add('reviews')
-      //       divEle.setAttribute('id',review._id.toString());
+//       //       let divEle=document.createElement('div');
+//       //       divEle.classList.add('reviews')
+//       //       divEle.setAttribute('id',review._id.toString());
        
-      //       divEle.appendChild(reviewEle);
-      //       divEle.appendChild(autherEle);
+//       //       divEle.appendChild(reviewEle);
+//       //       divEle.appendChild(autherEle);
 
             
-      //       let btnEle = document.createElement('button');
-      //       btnEle.addEventListener('click',(event)=>deleteReview(event, review._id.toString()));
-      //       btnEle.innerText = 'Delete';
-      //       divEle.appendChild(btnEle);
+//       //       let btnEle = document.createElement('button');
+//       //       btnEle.addEventListener('click',(event)=>deleteReview(event, review._id.toString()));
+//       //       btnEle.innerText = 'Delete';
+//       //       divEle.appendChild(btnEle);
 
-      //       let updateButtonEle=document.createElement('button');
-      //       updateButtonEle.addEventListener('click',()=>updateReview(review._id.toString()))
-      //       updateButtonEle.innerText='Update';
+//       //       let updateButtonEle=document.createElement('button');
+//       //       updateButtonEle.addEventListener('click',()=>updateReview(review._id.toString()))
+//       //       updateButtonEle.innerText='Update';
     
              
-      //       divEle.appendChild(updateButtonEle);
+//       //       divEle.appendChild(updateButtonEle);
 
-      //       let reviewContainer=document.getElementById('reviews-container');
-      //       reviewContainer.appendChild(divEle);
+//       //       let reviewContainer=document.getElementById('reviews-container');
+//       //       reviewContainer.appendChild(divEle);
        
 
-      //     }
+//       //     }
 
 
        
 
-     })
-  }
+//      })
+//   }
+  
   function addReview(event, empId){
   //push review  in to the database
   let textInputAreaEle=document.getElementById('input-textarea');
@@ -934,7 +935,7 @@ let reviewDiv=document.getElementById(id);
 }
 function addFeedback(id){
   let reviewDiv=document.getElementById(id);
-  console.log(`hey its priting reviewDiv ${reviewDiv}`);
+  //console.log(`hey its priting reviewDiv ${reviewDiv}`);
   //reviewDiv.removeChild(reviewDiv.lastChild);
   let textAreaEle=document.createElement('textarea');
   textAreaEle.setAttribute('col','100');
@@ -953,7 +954,7 @@ function addFeedback(id){
       'feedback':feedBackText
     }
 
-    fetch(`http://localhost:8000/v1/reviews/update/${id}`,{
+    fetch(`http://localhost:8000/v1/reviews/feedback/${id}`,{
       'method':'PUT',
       'credentials':'include',
       'headers':{
@@ -963,8 +964,9 @@ function addFeedback(id){
     }).then((promiseData)=>{
       return promiseData.json();
     }).then((responseData)=>{
-      console.log(responseData);
+      //console.log(responseData);
 
+      reviewDiv.removeChild(reviewDiv.lastChild);
       reviewDiv.removeChild(reviewDiv.lastChild);
       reviewDiv.removeChild(reviewDiv.lastChild);
 
@@ -985,6 +987,7 @@ function addFeedback(id){
 function initSession(){
    fetch(`http://localhost:8000/v1/employees/whoAmI`,{
     'method':'GET',
+    'credentials':'include',
     'headers':{
       'content-type':'application/json'
     }, 
@@ -1023,4 +1026,200 @@ function initSession(){
    })
 } 
 initSession();
+
+function showReviews(event){
+  let emp_id = event.target.parentElement.id;
+  fetch(`http://localhost:8000/v1/employees/${emp_id}`,{
+      'method':'GET',
+      'credentials':'include',
+      'headers':{
+          'content-type':'application/json'
+      },
+
+  }).then((data)=>{
+      return data.json();
+  }).then((data)=>{
+      //call whoami
+      fetch(`http://localhost:8000/v1/employees/whoami`,{
+          'method':'GET',
+          'credentials':'include',
+          'headers':{
+              'content-type':'application/json'
+          },
+      }).then(
+          (wmiData)=>{
+              return wmiData.json();
+          }
+      ).then(
+          (wmiResp)=>{
+              if(wmiResp.user._id.toString() == emp_id){
+                  let reviewArr = data.allEmp.reviews;
+                  let id = data.allEmp._id.toString();
+                  let name = data.allEmp.name;
+                  let email = data.allEmp.email;
+
+                  let nameEle = document.createElement('h3');
+                  nameEle.innerText = `Name : ${name}`
+                  let emailEle = document.createElement('h3');
+                  emailEle.innerText = `Email : ${email}`
+
+                  let sectionEle1 = document.createElement('section');
+                  sectionEle1.appendChild(nameEle);
+                  sectionEle1.appendChild(emailEle);
+
+                  let rootEle = document.getElementById('root');
+                  rootEle.innerHTML = '';
+                  //show all reviews of employee
+                  const revewsArr = data.allEmp.review;
+                  for(let review of revewsArr){
+                      let reviewEle = document.createElement('p');
+                      reviewEle.innerText = review.message;
+
+                      let authorEle = document.createElement('p');
+                      authorEle.classList.add('auther');
+                      fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
+                          'credentials':'include'
+                      }).then((data)=>{
+                          return data.json();
+                      }).then((data)=>{
+                          authorEle.innerText =`Review By : ${data.employee.name}`;
+                      })
+                      //authorEle.innerText =`Review By : ${reviewrName}`;
+                      authorEle.classList.add('auther');
+
+                      let divEle = document.createElement('div');
+                      divEle.classList.add('reviews');
+                      divEle.setAttribute('id',review._id.toString());
+
+                      divEle.appendChild(reviewEle);
+                      divEle.appendChild(authorEle);
+
+                      let feedbackMessage = review?.feedback ? review.feedback: null;
+
+                      if(feedbackMessage == null){
+                          let feedbackBtnEle = document.createElement('button');
+                          feedbackBtnEle.addEventListener('click',()=>addFeedback(review._id.toString()));
+                          feedbackBtnEle.innerText = 'Add Feedback';
+                          divEle.appendChild(feedbackBtnEle);
+                      }else{
+                          let h4Ele = document.createElement('h4');
+                          h4Ele.innerText = "Employee's Feedback";
+                          divEle.appendChild(h4Ele);
+                          let pEle = document.createElement('p');
+                          pEle.innerText = feedbackMessage;
+                          divEle.appendChild(pEle);
+                      }
+                      let reviewContainer = document.getElementById('reviews-container');
+                      reviewContainer.appendChild(divEle);
+                  }
+              }else{
+                  let reviewArr = data.employee.reviews;
+                  let id = data.employee._id.toString();
+                  let name = data.employee.name;
+                  let email = data.employee.email;
+
+                  let nameEle = document.createElement('h3');
+                  nameEle.innerText = `Name : ${name}`
+                  let emailEle = document.createElement('h3');
+                  emailEle.innerText = `Email : ${email}`
+
+                  let sectionEle1 = document.createElement('section');
+                  sectionEle1.appendChild(nameEle);
+                  sectionEle1.appendChild(emailEle);
+
+                  let textAreaEle = document.createElement('textarea');
+                  textAreaEle.setAttribute('cols','60');
+                  textAreaEle.setAttribute('rows','4');
+                  textAreaEle.setAttribute('id', 'input-text-area');
+                  
+                  let buttonEle = document.createElement('button');
+                  buttonEle.innerText = 'Add Review';
+                  buttonEle.addEventListener('click',(event)=> addReview(event, id));
+
+                  //input field for adding reviewer
+                  let reveInputEle = document.createElement('input');
+                  reveInputEle.setAttribute('placeholder', 'Enter reviewer email');
+                  reveInputEle.setAttribute('type', 'email');
+                  reveInputEle.id = 'reviewer-input';
+
+                  //Add reviewer button
+                  let reveButtonEle = document.createElement('button');
+                  reveButtonEle.innerText = 'Add Reviewer';
+                  reveButtonEle.addEventListener('click',(event)=> addReviewer(id));
+
+                  let sectionEle2 = document.createElement('section');
+                  sectionEle2.classList.add('right-review-section');
+                  sectionEle2.appendChild(textAreaEle);
+                  sectionEle2.appendChild(buttonEle);
+                  sectionEle2.appendChild(reveInputEle);
+                  sectionEle2.appendChild(reveButtonEle);
+
+                  let inputContainerDiv = document.createElement('div');
+                  inputContainerDiv.classList.add('review-input');
+
+                  inputContainerDiv.appendChild(sectionEle1);
+                  inputContainerDiv.appendChild(sectionEle2);
+
+                  let rootEle = document.getElementById('root');
+                  rootEle.innerHTML = '';
+                  rootEle.appendChild(inputContainerDiv);
+
+                  //show all reviews of employee
+                  const revewsArr = data.employee.reviews;
+                  for(let review of revewsArr){
+                      let reviewEle = document.createElement('p');
+                      reviewEle.innerText = review.message;
+
+                      let authorEle = document.createElement('p');
+                      authorEle.classList.add('auther');
+                      fetch(`http://localhost:8000/v1/employees/${review.review_by.toString()}`,{
+                          'credentials':'include'
+                      }).then((data)=>{
+                          return data.json();
+                      }).then((data)=>{
+                          authorEle.innerText =`Review By : ${data.employee.name}`;
+                      })
+                      //authorEle.innerText =`Review By : ${reviewrName}`;
+                      authorEle.classList.add('auther');
+
+                      let divEle = document.createElement('div');
+                      divEle.classList.add('reviews');
+                      divEle.setAttribute('id',review._id.toString());
+
+                      divEle.appendChild(reviewEle);
+                      divEle.appendChild(authorEle);
+
+                      //showing feedback
+                      let feedbackMessage = review?.feedback ? review.feedback: null;
+
+                      if(feedbackMessage != null){
+                          let h4Ele = document.createElement('h4');
+                          h4Ele.innerText = "Employee's Feedback";
+                          divEle.appendChild(h4Ele);
+                          let pEle = document.createElement('p');
+                          pEle.innerText = feedbackMessage;
+                          divEle.appendChild(pEle);
+                      }
+                      //Delete Button
+                      let btnEle = document.createElement('button');
+                      btnEle.addEventListener('click',(event)=>deleteReview(event, review._id.toString()));
+                      btnEle.innerText = 'Delete';
+
+                      //Update Button
+                      //Update Button
+                      let updateBtnEle = document.createElement('button');
+                      updateBtnEle.addEventListener('click',()=>updateReview(review._id.toString()));
+                      updateBtnEle.innerText = 'Update';
+
+                      divEle.appendChild(btnEle);
+                      divEle.appendChild(updateBtnEle);
+
+                      let reviewContainer = document.getElementById('reviews-container');
+                      reviewContainer.appendChild(divEle);
+                  }
+              }
+          }
+      )
+  })
+}
  

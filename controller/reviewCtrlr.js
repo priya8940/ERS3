@@ -109,3 +109,26 @@ module.exports.updateReview=async (req,res)=>{
 
    
 }
+module.exports.addFeedback = async (req, res)=>{
+    const reviewId = req.params.id;
+    const review_by = req.headers.cookie?.split('=')[1];
+    if(review_by == null || review_by == undefined || review_by == -1){
+        res.status(403);
+        res.json({
+            "message":"Please Login first"
+        });
+        return res;
+    }
+    if(reviewId!=null){
+        const feedback = req.body?.feedback;
+        //update call updates the entry in db but returns the old object
+        const review = await reviewModel.findByIdAndUpdate(reviewId,{"feedback": feedback});
+        const updatedReview = await reviewModel.findById(review._id.toString());
+        res.json({
+            'status_code':'200',
+            "message":"Feedback has been added Successfully",
+            'review':updatedReview
+        });
+        return res;
+    }
+}
